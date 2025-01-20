@@ -43,7 +43,6 @@ def consume_indoor_humidity_messages(indoor_consumer, shared_data, lock):
 def consume_outdoor_humidity_messages(outdoor_consumer, shared_data, lock):
     for outdoor_msg in outdoor_consumer:
         # Get humidity and timestamp from message
-        logging.info(outdoor_msg.value.get("message"))
         outdoor_humidity = json.loads(outdoor_msg.value.get("message"))["humidity"]
         logging.info(f"Received outdoor humidity: {outdoor_humidity}")
         
