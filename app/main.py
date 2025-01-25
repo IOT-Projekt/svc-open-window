@@ -2,12 +2,17 @@ from kafka_handler import KafkaConfig, setup_kafka_consumer
 import threading
 import json
 import logging
+import os
 
 # Set up basic logging
 logging.basicConfig(level=logging.INFO)
 
 OPEN_WINDOW_STR = "Öffne die Fenster, um die Luftfeuchtigkeit zu vebessern."
 CLOSE_WINDOW_STR = "Bitte lasse die Fenster geschlossen, um die Luftfeuchtigkeit zu erhalten."
+
+# Kafka topics
+INDOOR_TOPIC = os.getenv("KAFKA_INDOOR_TOPIC", "humidity")
+OUTDOOR_TOPIC = os.getenv("KAFKA_OUTDOOR_TOPIC", "open_weather")
 
 def should_open_windows(indoor_humidity, outdoor_humidity):
     """
@@ -57,8 +62,8 @@ def consume_outdoor_humidity_messages(outdoor_consumer, shared_data, lock):
 def main():
     # Set up Kafka
     kafka_config = KafkaConfig()
-    indoor_consumer = setup_kafka_consumer(kafka_config, ["humidity"])
-    outdoor_consumer = setup_kafka_consumer(kafka_config, ["open_weather"])
+    indoor_consumer = setup_kafka_consumer(kafka_config, [INDOOR_TOPIC])
+    outdoor_consumer = setup_kafka_consumer(kafka_config, [OUTDOOR_TOPIC])
 
     # Shared data between threads
     shared_data = {
