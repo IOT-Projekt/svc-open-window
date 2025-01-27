@@ -36,7 +36,7 @@ def should_open_windows(indoor_humidity, outdoor_humidity) -> str:
 def consume_indoor_humidity_messages(indoor_consumer, shared_data, lock) -> None:
     for indoor_msg in indoor_consumer:
         # Get humidity and timestamp from message
-        indoor_humidity = json.loads(indoor_msg.value.get("message"))["humidity"]
+        indoor_humidity = indoor_msg.value["humidity"]
         logging.info(f"Received indoor humidity: {indoor_humidity}")
 
         # update shared data with indoor humidity and check if we should open the windows
@@ -57,7 +57,7 @@ def consume_indoor_humidity_messages(indoor_consumer, shared_data, lock) -> None
 def consume_outdoor_humidity_messages(outdoor_consumer, shared_data, lock):
     for outdoor_msg in outdoor_consumer:
         # Get humidity and timestamp from message
-        outdoor_humidity = json.loads(outdoor_msg.value.get("message"))["humidity"]
+        outdoor_humidity = outdoor_msg.value["humidity"]
         logging.info(f"Received outdoor humidity: {outdoor_humidity}")
 
         # update shared data with outdoor humidity and check if we should open the windows
